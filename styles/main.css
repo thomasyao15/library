@@ -119,10 +119,15 @@ button {
     left: 0;
     width: 100vw;
     height: 100vh;
+    display: none;
+    
+    background-color: rgba(128, 128, 128, 0.199);
+}
+
+.open {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(128, 128, 128, 0.199);
 }
 
 .modal {
