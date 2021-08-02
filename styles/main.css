@@ -1,7 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
 
-html, button {
+html, button, input {
     padding: none;
     font-family: "Poppins", sans-serif;
 }
@@ -110,5 +110,66 @@ button {
 
 .delete {
     border: 1px solid rgb(238, 107, 107);
-    color:rgb(238, 107, 107)
+    color:rgb(238, 107, 107);
+}
+
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(128, 128, 128, 0.199);
+}
+
+.modal {
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    /* box-shadow: 0 0 20px rgb(219, 219, 219); */
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    padding: 40px;
+}
+
+#add-book-form {
+    margin-top: 30px;
+    display: grid;
+    width: 100%;
+    grid-gap: 10px;
+}
+
+input {
+    font-size: 15px;
+    padding-left: 10px;
+}
+
+form button {
+    margin: 5px;
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: 1px solid rgb(37, 192, 133);
+    color:rgb(37, 192, 133);
+}
+
+#close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+
+    margin: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: 1px solid rgb(243, 94, 131);
+    color:rgb(243, 94, 131);
 }
