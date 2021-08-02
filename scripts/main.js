@@ -19,10 +19,12 @@ function Library() {
         this.books.push(newBook);
         console.log(this.books);
 
-        this.addBookHtml(newBook, this.books.length);
+        this.addBookHtml(newBook, this.books.length - 1);
     };
-    this.deleteBook = (bookIndex) => {
+    this.deleteBook = (e) => {
         this.books.splice(bookIndex, 1);
+
+        
     };
 }
 Library.prototype.addBookHtml = (newBook, libraryLength) => {
@@ -63,12 +65,21 @@ Library.prototype.addBookHtml = (newBook, libraryLength) => {
     const deleteButton = document.createElement('button');
     deleteButton.classList = 'delete';
     deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", deleteBook);
     buttonWrapper.appendChild(deleteButton);
     
     bookDiv.appendChild(buttonWrapper);
     bookDiv.id = `book${libraryLength}`;
     const libraryGrid = document.querySelector(".library-grid");
     libraryGrid.appendChild(bookDiv);
+}
+
+function deleteBook(e) {
+    bookDiv = e.target.parentElement.parentElement;
+    bookIndex = bookDiv.id.substring(4);
+    library.deleteBook(parseInt(bookIndex));
+
+    bookDiv.parentElement.removeChild(bookDiv);
 }
 
 
@@ -85,8 +96,6 @@ Book.prototype.toggleRead = () => {
 
 library = new Library();
 
-// TODO: add addBookHTML function that creates new book div with unique IDs
-// TODO: route modal inputs to addBook function
 // TODO: add deleteBook function - filters through following book divs and decrements IDs to match array index
 
 function addBook(e) {
@@ -99,3 +108,5 @@ function addBook(e) {
     library.addBook(title, author, pages, hasBeenRead);
     toggleModal();
 }
+
+
