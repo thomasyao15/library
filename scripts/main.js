@@ -1,18 +1,15 @@
 
-
+// Helper functions
 function toggleModal() {
     const modal = document.querySelector(".modal-container");
     modal.classList.toggle("open");
 }
 
-
+// Obj constructors
 function Library() {
     this.books = [testBook1, testBook2];
-    this.addBook = (title, author, pages, hasBeenRead) => {
-        const newBook = new Book(title, author, pages, hasBeenRead);
+    this.pushNewBook = (newBook) => {
         this.books.push(newBook);
-
-        addBookHtml(newBook, this.books.length - 1);
     };
     this.deleteBook = (bookIndex) => {
         this.books.splice(bookIndex, 1);
@@ -22,6 +19,33 @@ function Library() {
         this.books[bookIndex].toggleRead();
         console.table(this.books);
     }
+}
+
+function Book(title, author, pages, hasBeenRead) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.hasBeenRead = hasBeenRead;
+}
+Book.prototype.toggleRead = function() {
+    this.hasBeenRead = !this.hasBeenRead; // IDK WHY arrow functions dont work for prototypes
+    console.log(`Has been read: ${this.hasBeenRead}`);
+};
+
+// HTML button event listeners -> calls obj methods
+function addBook(e) {
+    e.preventDefault();
+    const title = addForm.querySelector('input[id="title"]').value;
+    const author = addForm.querySelector('input[id="author"]').value;
+    const pages = addForm.querySelector('input[id="pages"]').value;
+    const hasBeenRead = addForm.querySelector('input[id="has-read"]').checked;
+
+    const newBook = new Book(title, author, pages, hasBeenRead);
+
+    library.pushNewBook(newBook);
+    addBookHtml(newBook, library.books.length - 1);
+
+    toggleModal();
 }
 
 function addBookHtml(newBook, libraryLength) {
@@ -42,7 +66,6 @@ function addBookHtml(newBook, libraryLength) {
     bookInfo.appendChild(author);
     bookInfo.appendChild(pages);
     bookDiv.appendChild(bookInfo);
-
 
     const buttonWrapper = document.createElement('div');
     buttonWrapper.className = "button-wrapper";
@@ -83,7 +106,6 @@ function deleteBookHtml(e) {
         book.id = `book${currentBookIndex - 1}`;
     })
     console.log(remainingBooks);
-
 }
 
 function toggleReadHtml(e) {
@@ -96,46 +118,17 @@ function toggleReadHtml(e) {
 }
 
 
-function Book(title, author, pages, hasBeenRead) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.hasBeenRead = hasBeenRead;
-}
-Book.prototype.toggleRead = function() {
-    this.hasBeenRead = !this.hasBeenRead; // IDK WHY arrow functions dont work for prototypes
-    console.log(`Has been read: ${this.hasBeenRead}`);
-};
 
-
-// TODO: add deleteBook function - filters through following book divs and decrements IDs to match array index
-
-function addBook(e) {
-    e.preventDefault();
-    const title = addForm.querySelector('input[id="title"]').value;
-    const author = addForm.querySelector('input[id="author"]').value;
-    const pages = addForm.querySelector('input[id="pages"]').value;
-    const hasBeenRead = addForm.querySelector('input[id="has-read"]').checked;
-
-    library.addBook(title, author, pages, hasBeenRead);
-    toggleModal();
-}
-
-
-
-
-
-
-
+// Set event listeners
 document.getElementById("add-book").addEventListener("click", toggleModal);
 document.getElementById("close-modal").addEventListener("click", toggleModal);
 const addForm = document.getElementById("add-book-form");
 addForm.addEventListener("submit", addBook);
 
 
-// Initial test books
+// Setup 2 starting example books
 let testBook1 = new Book("LOTR", "JRR", 234, false);
-let testBook2 = new Book("ASDF", "JRR", 234, false);
+let testBook2 = new Book("Aristotle and Dante", "Benjamin Alire Sáenz", 368, false);
 
 const deleteButtons = document.querySelectorAll(".delete");
 deleteButtons.forEach((deleteButton) => {
@@ -146,6 +139,6 @@ const readButtons = document.querySelectorAll(".not-read");
 readButtons.forEach(readButton => {
     readButton.addEventListener("click", toggleReadHtml);
 });
-// End test books
+// End of optional books setup
 
 library = new Library();
