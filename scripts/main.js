@@ -1,23 +1,4 @@
 
-document.getElementById("add-book").addEventListener("click", toggleModal);
-document.getElementById("close-modal").addEventListener("click", toggleModal);
-const addForm = document.getElementById("add-book-form");
-addForm.addEventListener("submit", addBook);
-
-
-// Initial test books
-let testBook1 = new Book("LOTR", "JRR", 234, false);
-let testBook2 = new Book("ASDF", "JRR", 234, false);
-
-
-const deleteButtons = document.querySelectorAll(".delete");
-deleteButtons.forEach((deleteButton) => {
-    deleteButton.addEventListener('click', deleteBookHtml);
-});
-// End test books
-
-library = new Library();
-
 
 function toggleModal() {
     const modal = document.querySelector(".modal-container");
@@ -30,16 +11,20 @@ function Library() {
     this.addBook = (title, author, pages, hasBeenRead) => {
         const newBook = new Book(title, author, pages, hasBeenRead);
         this.books.push(newBook);
-        console.log(this.books);
 
-        this.addBookHtml(newBook, this.books.length - 1);
+        addBookHtml(newBook, this.books.length - 1);
     };
     this.deleteBook = (bookIndex) => {
         this.books.splice(bookIndex, 1);
         console.log(this.books);
     };
+    this.toggleIndividualBookRead = (bookIndex) => {
+        this.books[bookIndex].toggleRead();
+        console.table(this.books);
+    }
 }
-Library.prototype.addBookHtml = (newBook, libraryLength) => {
+
+function addBookHtml(newBook, libraryLength) {
     const bookDiv = document.createElement('div');
     bookDiv.className = "book";
 
@@ -62,17 +47,11 @@ Library.prototype.addBookHtml = (newBook, libraryLength) => {
     const buttonWrapper = document.createElement('div');
     buttonWrapper.className = "button-wrapper";
 
-    if (newBook.hasBeenRead) {
-        const readButton = document.createElement('button');
-        readButton.textContent = 'Finished';
-        readButton.classList = 'read';
-        buttonWrapper.appendChild(readButton);
-    } else {
-        const notReadButton = document.createElement('button');
-        notReadButton.classList = 'not-read';
-        notReadButton.textContent = "Not read yet";
-        buttonWrapper.appendChild(notReadButton);
-    }
+    const readButton = document.createElement('button');
+    readButton.textContent = (newBook.hasBeenRead) ? 'Finished' : "Not read yet";
+    readButton.classList = (newBook.hasBeenRead) ? 'read' : "not-read";
+    readButton.addEventListener("click", toggleReadHtml);
+    buttonWrapper.appendChild(readButton);
 
     const deleteButton = document.createElement('button');
     deleteButton.classList = 'delete';
@@ -107,6 +86,15 @@ function deleteBookHtml(e) {
 
 }
 
+function toggleReadHtml(e) {
+    bookDiv = e.target.parentElement.parentElement;
+    bookIndex = bookDiv.id.substring(4);
+    library.toggleIndividualBookRead(parseInt(bookIndex));
+
+    e.target.className = (e.target.className == "read") ? "not-read" : "read";
+    e.target.textContent = (e.target.textContent == "Finished") ? "Not read yet" : "Finished";
+}
+
 
 function Book(title, author, pages, hasBeenRead) {
     this.title = title;
@@ -114,8 +102,8 @@ function Book(title, author, pages, hasBeenRead) {
     this.pages = pages;
     this.hasBeenRead = hasBeenRead;
 }
-Book.prototype.toggleRead = () => {
-    this.hasBeenRead = !this.hasBeenRead;  // do you need this keyword?
+Book.prototype.toggleRead = function() {
+    this.hasBeenRead = !this.hasBeenRead; // IDK WHY arrow functions dont work for prototypes
     console.log(`Has been read: ${this.hasBeenRead}`);
 };
 
@@ -134,3 +122,30 @@ function addBook(e) {
 }
 
 
+
+
+
+
+
+document.getElementById("add-book").addEventListener("click", toggleModal);
+document.getElementById("close-modal").addEventListener("click", toggleModal);
+const addForm = document.getElementById("add-book-form");
+addForm.addEventListener("submit", addBook);
+
+
+// Initial test books
+let testBook1 = new Book("LOTR", "JRR", 234, false);
+let testBook2 = new Book("ASDF", "JRR", 234, false);
+
+const deleteButtons = document.querySelectorAll(".delete");
+deleteButtons.forEach((deleteButton) => {
+    deleteButton.addEventListener('click', deleteBookHtml);
+});
+
+const readButtons = document.querySelectorAll(".not-read");
+readButtons.forEach(readButton => {
+    readButton.addEventListener("click", toggleReadHtml);
+});
+// End test books
+
+library = new Library();
