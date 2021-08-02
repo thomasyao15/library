@@ -5,15 +5,28 @@ const addForm = document.getElementById("add-book-form");
 addForm.addEventListener("submit", addBook);
 
 
+// Initial test books
+let testBook1 = new Book("LOTR", "JRR", 234, false);
+let testBook2 = new Book("ASDF", "JRR", 234, false);
+
+
+const deleteButtons = document.querySelectorAll(".delete");
+deleteButtons.forEach((deleteButton) => {
+    deleteButton.addEventListener('click', deleteBookHtml);
+});
+// End test books
+
+library = new Library();
+
+
 function toggleModal() {
-    console.log("Toggle modal");
     const modal = document.querySelector(".modal-container");
     modal.classList.toggle("open");
 }
 
 
 function Library() {
-    this.books = [];
+    this.books = [testBook1, testBook2];
     this.addBook = (title, author, pages, hasBeenRead) => {
         const newBook = new Book(title, author, pages, hasBeenRead);
         this.books.push(newBook);
@@ -21,10 +34,9 @@ function Library() {
 
         this.addBookHtml(newBook, this.books.length - 1);
     };
-    this.deleteBook = (e) => {
+    this.deleteBook = (bookIndex) => {
         this.books.splice(bookIndex, 1);
-
-        
+        console.log(this.books);
     };
 }
 Library.prototype.addBookHtml = (newBook, libraryLength) => {
@@ -65,7 +77,7 @@ Library.prototype.addBookHtml = (newBook, libraryLength) => {
     const deleteButton = document.createElement('button');
     deleteButton.classList = 'delete';
     deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", deleteBook);
+    deleteButton.addEventListener("click", deleteBookHtml);
     buttonWrapper.appendChild(deleteButton);
     
     bookDiv.appendChild(buttonWrapper);
@@ -74,12 +86,25 @@ Library.prototype.addBookHtml = (newBook, libraryLength) => {
     libraryGrid.appendChild(bookDiv);
 }
 
-function deleteBook(e) {
+function deleteBookHtml(e) {
     bookDiv = e.target.parentElement.parentElement;
     bookIndex = bookDiv.id.substring(4);
     library.deleteBook(parseInt(bookIndex));
 
-    bookDiv.parentElement.removeChild(bookDiv);
+    bookDiv.parentElement.removeChild(bookDiv);  // delete bookDiv
+
+    // Grab every bookDiv with index > deletedBook and decrement their id to represent book index in library array
+    remainingBooks = Array.from(document.querySelectorAll(".book"));
+    remainingBooks = remainingBooks.filter(book => {
+        currentBookIndex = parseInt(book.id.substring(4));
+        return currentBookIndex > bookIndex;
+    })
+    remainingBooks.forEach(book => {
+        currentBookIndex = parseInt(book.id.substring(4));
+        book.id = `book${currentBookIndex - 1}`;
+    })
+    console.log(remainingBooks);
+
 }
 
 
@@ -94,7 +119,6 @@ Book.prototype.toggleRead = () => {
     console.log(`Has been read: ${this.hasBeenRead}`);
 };
 
-library = new Library();
 
 // TODO: add deleteBook function - filters through following book divs and decrements IDs to match array index
 
