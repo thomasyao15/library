@@ -1,0 +1,114 @@
+
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+
+html, button {
+    padding: none;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 !important;
+}
+
+.main-container {
+    max-width: 1000px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav {
+    background-color: #ECFBFF;
+    /* padding: 10px; */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 0 15px 15px;
+    margin-bottom: 50px;
+}
+
+h1 {
+    color: #8093A6;
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-weight: 500;
+    font-size: 16px;
+    margin: 5px;
+}
+
+#add-book {
+    padding: 10px 30px;
+    font-size: 18px;
+    background-color: transparent;
+    border: 1px solid rgb(180, 39, 180);
+    color: rgb(204, 52, 204);
+    border-radius: 50px;
+    margin-bottom: 30px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.library-outter-padding {
+    width: 100%;
+    padding: 0;
+}
+
+.library-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 20px;
+    padding: 0 20px;
+}
+
+.book {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(61, 167, 238);
+    padding: 0 20px 20px 20px;
+    border-radius: 15px;
+    text-align: center;
+    color: rgb(16, 16, 90);
+}
+
+.button-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.button-wrapper button {
+    margin: 5px;
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+.not-read {
+    border: 1px solid grey;
+}
+
+.delete {
+    border: 1px solid rgb(238, 107, 107);
+    color:rgb(238, 107, 107)
+}
